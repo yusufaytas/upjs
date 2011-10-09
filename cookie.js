@@ -15,12 +15,12 @@ _.cookie = (function(){
 	// @days - expire day
 	// sets the cookie
 	c.setCookie = function(name,value,days){
+		var expires = "";
 		if (days){
 			var date = new Date();
 			date.setTime(date.getTime()+(days*24*60*60*1000));
-			var expires = "; expires="+date.toGMTString();
-		}
-		else var expires = "";
+			expires = "; expires="+date.toGMTString();
+		}			
 		document.cookie = name+"="+value+expires+"; path=/";
 	};
 	// @name - cookie name 
@@ -28,7 +28,7 @@ _.cookie = (function(){
 	c.getCookie = function (name){
 		var nname = name + "=";
 		var ck = document.cookie.split(';');
-		for(i=0;i < ck.length;i++){
+		for(var i=0;i < ck.length;i++){
 			var c = ck[i];
 			while (c.charAt(0)==' ') 
 				c = c.substring(1,c.length);

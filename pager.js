@@ -9,7 +9,7 @@ _.pager = (function(){
 	//tp totalPage
 	//bp beginPage
 	//ep endPage
-	var tp,bp,ep;
+	var tp=bp=ep=0;
 	// @props - properties to initalize a pager object
 	// returns a div element that contains span collection
 	function p(props){

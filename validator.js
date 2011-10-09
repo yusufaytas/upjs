@@ -38,6 +38,6 @@ _.validator = (function(){
 		email : /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
 		date : /\d{1,2}\/\d{1,2}\/\d{4}/,
 		image: /(.)*\.(jpg|png|gif|bmp)$/
-	}
+	};
 	return v;
 })();

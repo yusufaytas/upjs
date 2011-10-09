@@ -73,7 +73,7 @@ _.styler = (function(){
 	s.addRule = function(ss,rule){
 		if(ss.rules){
 			selector = rule.substring(0,rule.indexOf("{"));
-			decleration = rule.substring(rule.indexOf("{")+1,rule.indexOf("}"))
+			decleration = rule.substring(rule.indexOf("{")+1,rule.indexOf("}"));
 			ss.addRule(selector,decleration);
 		}else
 			ss.insertRule(rule,0);

@@ -59,7 +59,7 @@ _.serializer = (function(){
 		if (typeof (json) != "object" || json === null)
 			return '"'+String(json)+'"';  
 		else{  
-			var n, v, jsonArr = [], arr = (json && json.constructor == Array);  
+			var n=v="", jsonArr = [], arr = (json && json.constructor == Array);  
 			for (n in json) {  
 				v = json[n];   
 				if (typeof(v) == "object" && v !== null)
@@ -81,7 +81,7 @@ _.serializer = (function(){
 		if(type)
 			_.post(url,"json="+encodeURIComponent(s.serialize(json)),callback);
 		else
-			_.post(url,"json="+encodeURIComponent(s.serialize(json)),type,callback)
+			_.post(url,"json="+encodeURIComponent(s.serialize(json)),type,callback);
 	};
 	// @url - url that request will be send
 	// @json - json to be sent to server

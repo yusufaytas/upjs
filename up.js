@@ -52,7 +52,7 @@
     attrbt = function(element,tag,at,value){
 		var elements = element.getElementsByTagName(tag);
 		var array = new Array();
-		for(i=0;i<elements.length;i++)
+		for(var i=0;i<elements.length;i++)
 		{
 			if ( value ) {
 				if ( elements[i].hasAttribute(at) && elements[i].getAttribute(at) == value )
@@ -83,7 +83,7 @@
 			result = attrbt(element,"*",sel.substring(0,sel.indexOf(":")),sel.substring(sel.indexOf(":")+1));
 		else{
 			elements = element.getElementsByTagName(sel);
-			for(i=0;i<elements.length;i++)
+			for(var i=0;i<elements.length;i++)
 				result.push(elements[i]);
 		}
 		if(!result&&result.length == 0)
@@ -124,7 +124,7 @@
 	// returns children of a dom element
 	_.children = function (element){
 		var list = element.childNodes, oList = new Array();
-		for(i=0;i<list.length;i++)
+		for(var i=0;i<list.length;i++)
 			if(list[i].tagName)
 				oList.push(list[i]);
 		return oList;
@@ -133,7 +133,7 @@
 	// returns next dom element
 	_.next = function(element){
 		var list = _.children(_.parent(element));
-		for(i=0;i<list.length;i++)
+		for(var i=0;i<list.length;i++)
 			if(list[i]==element)
 				return list[i+1];
 	};
@@ -141,7 +141,7 @@
 	// returns previous dom element
 	_.prev = function(element){
 		var list = _.children(_.parent(element));
-		for(i=0;i<list.length;i++)
+		for(var i=0;i<list.length;i++)
 			if(list[i]==element)
 				return list[i-1];
 	};
@@ -153,7 +153,7 @@
 	// @element - dom element
 	// returns last child
 	_.last = function(element){
-		var list = _.children(element)
+		var list = _.children(element);
 		return list[list.length-1];
 	};
 	// @element - dom element
@@ -209,13 +209,13 @@
 	// for each list elements applies func
 	_.foreach = function(list,func,args){
 		if(args){
-			for(i=0;i<list.length;i++){
+			for(var i=0;i<list.length;i++){
 				list[i].func = func;
 				list[i].func(args);
 			}
 		}
 		else{
-			for(i=0;i<list.length;i++){
+			for(var i=0;i<list.length;i++){
 				list[i].func = func;
 				list[i].func();
 			}
@@ -304,7 +304,7 @@
 		if(arguments.length==1)
 			return arguments[0].innerHTML;
 		if(arguments[0].length>1){				
-			_.foreach(arguments[0],function(arg){_.html(this,arg)},arguments[1]);}
+			_.foreach(arguments[0],function(arg){_.html(this,arg);},arguments[1]);}
 		else
 			arguments[0].innerHTML = arguments[1];
 	};
@@ -441,7 +441,7 @@
 	// attaches function to events for element
 	_.attach = function(el,events,fn){
 		var es = events.split(" ");
-		for(i=0;i<es.length;i++)
+		for(var i=0;i<es.length;i++)
 			if(el.attachEvent)
 				el.attachEvent("on"+es[i],fn);
 			else
@@ -453,7 +453,7 @@
 	// detaches functions from events for element
 	_.detach = function(el,events,fn){
 		var es = events.split(" ");
-		for(i=0;i<es.length;i++)
+		for(var i=0;i<es.length;i++)
 			if(el.attachEvent)
 				el.detachEvent("on"+es[i],fn);
 			else
