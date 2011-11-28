@@ -1,9 +1,11 @@
 UPJS is a javascript library that caters for the needs and requirements of web developers. 
-UPJS can be categorized into two, which are its core functions and its extensions like cookie.js and validator.js. 
-Core library supports basic functionalities of the library and extensions are to provide additional improvements on the library. 
-From an architectural perspective, UPJS aims 3 layer approach. First layer is UPJS core functionalities, second for its extensions
-and last layer for its plugins.
+UPJS can be categorized into two, which are its core functions and its extensions like 
+cookie.js and validator.js. Core library supports basic functionalities of the library
+and extensions are to provide additional improvements on the library. From an architectural
+perspective, UPJS aims 3 layer approach. First layer is UPJS core functionalities, second
+for its extensions and last layer for its plugins.
 
-UPJS is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published
-by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. UPJS is also MIT licenced.
+UPJS is free software: you can redistribute it and/or modify it under the terms of the GNU
+General Public License as published by the Free Software Foundation, either version 3 
+of the License, or (at your option) any later version. UPJS is also MIT licenced.
  
