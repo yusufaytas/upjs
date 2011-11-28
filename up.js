@@ -435,29 +435,29 @@
 		if(options.before)options.before();
 		xhr.send(options.params);
 	};
-	// @el - dom element
+	// @element - dom element
 	// @events - one or more dom element events
 	// @fn - function to be called when event occurs
 	// attaches function to events for element
-	_.attach = function(el,events,fn){
+	_.attach = function(element,events,fn){
 		var es = events.split(" ");
 		for(var i=0;i<es.length;i++)
-			if(el.attachEvent)
-				el.attachEvent("on"+es[i],fn);
+			if(element.attachEvent)
+				element.attachEvent("on"+es[i],fn);
 			else
-				el.addEventListener(es[i],fn,null);
+				element.addEventListener(es[i],fn,null);
 	};
-	// @el - dom element
+	// @element - dom element
 	// @events - one or more dom element events
 	// @fn - function to be called when event occurs
 	// detaches functions from events for element
-	_.detach = function(el,events,fn){
+	_.detach = function(element,events,fn){
 		var es = events.split(" ");
 		for(var i=0;i<es.length;i++)
-			if(el.attachEvent)
-				el.detachEvent("on"+es[i],fn);
+			if(element.attachEvent)
+				element.detachEvent("on"+es[i],fn);
 			else
-				el.removeEventListener(es[i],fn,null);
+				element.removeEventListener(es[i],fn,null);
 	};
 	// @url - url that page will be redirected
 	// redirects the page to given url
@@ -468,34 +468,6 @@
 	// calls fn when document is loaded
 	_.loaded = function(fn){
 		_.attach(window,"load",fn);
-	};
-	// @el - dom element
-	// toggles display none with block and vice versa
-	_.toggle = function(el){
-		if(!_.getStyle(el)||_.getStyle(el,"display")!="none")
-			_.addStyle(el,"display","none");
-		else
-			_.addStyle(el,"display","block");
-	};
-	// @el - dom element
-	// @clss - dom class attribute
-	// @cls - dom class attribute
-	// toggles display none with clss and vice versa
-	// if called with three params(el,clss,cls)
-	// toggles class clss with cls and vice versa
-	_.toggleClass = function(el,clss,cls){
-		if(!cls){
-			if(!_.getClass(el))
-				_.getClass(el,clss);
-			else
-				_.setClass(el,clss);
-		}
-		else{
-			if(!_.getClass(el)||_.getClass(el)==cls)
-				_.getClass(el,clss);
-			else
-				_.setClass(el,clss);
-		}
 	};
 	// regular expressions that are used 
 	_.regex={

@@ -1,5 +1,5 @@
 /*
- * pager, upjs extension
+ * pager, upjs plugin
  * http://www.upjs.org/
  * 
  * Copyright (C) 2011, Yusuf Aytas
