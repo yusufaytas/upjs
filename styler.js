@@ -20,14 +20,14 @@ _.styler = (function(){
 	// @ss - style sheet
 	// adds @ss to the head of document
 	s.addStyleSheet = function(ss){
-		_.append(_.tag("head")[0],ss);
+		_.tag("head").append(ss);
 	};
 	
 	// @title - style sheet title attribute value
 	// removes style sheet with given title
 	s.removeStyleSheet = function(title) {
-		var el = _(document.head,"title:"+title+"@link");
-		_.remove(_.parent(el),el);
+		var el = _("title:"+title+"@link",document.head);
+		el.parent().remove(el);
 	};
 	
 	// @content - style sheet content
@@ -78,6 +78,30 @@ _.styler = (function(){
 		}else
 			ss.insertRule(rule,0);
 	};
+	
+	_.addExtension({
+		getStyleSheet : function(title){
+			return s.getStyleSheet(title);
+		},
+		addStyleSheet : function(ss){
+			s.addStyleSheet(ss);
+		},
+		removeStyleSheet : function(title){
+			s.removeStyleSheet(title);
+		},
+		createStyleSheet:function (content,title){
+			return s.createStyleSheet(content,title);
+		},
+		setActiveStyleSheet:function (title){
+			s.setActiveStyleSheet(title);
+		},
+		getActiveStyleSheet :function (title){
+			return s.getActiveStyleSheet(title);
+		},
+		addRule : function(ss,rule){
+			s.addRule(ss,rule);
+		}
+	},true);
 	
 	return s;
 })();

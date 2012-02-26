@@ -12,9 +12,9 @@ _.validator = (function(){
 		return v.patterns.intt.test(value);
 	};
 	// @value
-	// checks the given value is string or not
-	v.isString = function(value){
-		return v.patterns.string.test(value);
+	// checks the given value is alpha or not
+	v.isAlpha = function(value){
+		return v.patterns.alpha.test(value);
 	};
 	// @value
 	// checks the given value is email or not
@@ -31,13 +31,41 @@ _.validator = (function(){
 	v.isImage = function(value){
 		return v.patterns.image.test(value);
 	};
+	// @value
+	// checks the given value is url or not
+	v.isUrl = function(value){
+		return v.patterns.url.test(value);
+	};
 	// patterns that are used for type checking
 	v.patterns = {
-		intt : /-{0,1}[0-9]+/,
-		string : /[A-Za-z]+/,
+		intt : /[-+]?[0-9]+/,
+		alpha : /[A-Za-z]+/,
 		email : /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-		date : /\d{1,2}\/\d{1,2}\/\d{4}/,
-		image: /(.)*\.(jpg|png|gif|bmp)$/
+		date : /(\d{1,2}[\/.-]\d{1,2}[\/.-]\d{4})|(\d{4}[\/.-]\d{1,2}[\/.-]\d{1,2})/,
+		image: /(.)*\.(jpg|png|gif|bmp)$/,
+		url : /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
 	};
+	
+	_.addExtension({
+		isInt:function(value){
+			return v.isInt(value);
+		},
+		isAlpha : function(value){
+			return v.isAlpha(value);
+		},
+		isEmail : function(value){
+			return v.isEmail(value);
+		},
+		isDate:function (value){
+			return v.isDate(value);
+		},
+		isImage:function (value){
+			return v.isImage(value);
+		},
+		isUrl:function (value){
+			return v.isUrl(value);
+		}
+	},true);
+	
 	return v;
 })();

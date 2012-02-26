@@ -1,47 +1,63 @@
 /*
  * upjs JavaScript Library
  * http://www.upjs.org/
- * 
- * Copyright (C) 2011, Yusuf Aytas
+ *
+ * Copyright (C) 2012, Yusuf Aytas
  */
  //Creating upjs and _ variable
  var _= up =  (function(){
-	// @selector - arguments for selecting dom elements 
+	// @selector - arguments for selecting dom elements
 	// @context - context that @selector is applied
 	// if called with one param, it selects via @selector from document context
 	// else it selects via @selector from @context
 	// returns html element collection
 	function _(){
-		if(arguments.length==1)
-			return _.select(document.body,arguments[0]);
+		if(arguments.length==1){
+			if(arguments[0].tagName|| typeof(arguments[0])=="object")
+				return new _.up(arguments[0]);
+			return new _.up(_.select(document.body,arguments[0]));
+		}
 		if(arguments.length==2)
-			return _.select(arguments[0],arguments[1]);
+			return new _.up(_.select(arguments[1],arguments[0]));
 	};
 	// @id - dom id attribute value
-	// returns the element with given id
-	_.id = function(id){
-        return document.getElementById(id);
+	// @context - context that is applied
+	// returns the element with given id from @context if it is given
+	_.id = function(id,context){
+		if(context)
+			return new _.up(context.getElementById(id));
+		return new _.up(document.getElementById(id));
     };
 	// @tag - dom tag value
-	// returns html element collection with given tag
-    _.tag = function(tag){
-        return document.getElementsByTagName(tag);
+    // @context - context that is applied
+	// returns html element collection with given tag from @context if it is given
+    _.tag = function(tag,context){
+    	if(context)
+    		return new _.up(context.getElementsByTagName(tag));
+    	return new _.up(document.getElementsByTagName(tag));
     };
 	// @name - dom name attribute value
-	// returns html element collection with given name
-    _.name = function(name){
-        return document.getElementsByName(name);
+    // @context - context that is applied
+	// returns html element collection with given name from @context if it is given
+    _.elName = function(name,context){
+    	if(context)
+    		return new _.up(context.getElementsByName(name));
+    	return new _.up(document.getElementsByName(name));
     };
 	// @name - dom class attribute value
 	// returns html element collection with given class
-    _.clss = function(cname){
-        return attrbt(document.body,"*","class",cname);
+    _.clss = function(cname,context){
+    	if(context)
+    		return new _.up(attrbt(context,"*","class",cname));
+    	return new _.up(attrbt(document.body,"*","class",cname));
     };
 	// @attribute - dom element attribute
 	// @value - dom name attribute value
 	// returns html element collection with given attribute and value
-	_.attr = function(attribute,value){
-		return attrbt(document.body,"*",attribute,value);
+	_.attr = function(attribute,value,context){
+		if(context)
+    		return new _.up(attrbt(context,"*",attribute,value));
+		return new _.up(attrbt(document.body,"*",attribute,value));
 	};
 	// private
 	// @element - dom element
@@ -70,7 +86,7 @@
 	// @selector - arguments for selecting dom elements
 	// returns html element collection by applying selector to element
 	_.select = function(element,selector){
-		var result = new Array(),sel = selector.split(" ")[0];
+		var result = [],sel = selector.split(" ")[0];
 		if(sel.charAt(0)=='.')
 			result = attrbt(element,"*","class",sel.substring(1));
 		else if(sel.charAt(0)=='#')
@@ -85,26 +101,26 @@
 			elements = element.getElementsByTagName(sel);
 			for(var i=0;i<elements.length;i++)
 				result.push(elements[i]);
+			if(result&&result.length==1)result=result[0];
 		}
 		if(!result&&result.length == 0)
 			return;
-		if(selector.split(" ").length<2){
-			if(result.length==1)result=result[0];
+		if(selector.split(" ").length<2)
 			return result;
-		}
 		else{
-			var col = new Array();
-			if(!(result.length))result = [result];
+			var col = [];
+			if(!result.length)
+				result = [result];
 			while(result.length!=0)
 			{
 				selector = selector.substring(selector.indexOf(" ")+1);
 				var temp = _.select(result.pop(),selector);
-				if(temp&&temp.length==0)
+				if(temp&&!temp.length)
 					col.push(temp);
 				while(temp&&temp.length>0)
 					col.push(temp.pop());
 			}
-			if(col.length==1)col=col[0];
+			if(col.length==1)col = col[0];
 			return col;
 		}
 	};
@@ -182,7 +198,10 @@
 	// @value - html element node
 	// inserts value before the element
 	_.insertBefore=function(element,value){
-		_.parent(element).insertBefore(_.create(value),element);
+		if(typeof(value)!="object")
+			_.parent(element).insertBefore(_.create(value),element);
+		else
+			_.parent(element).insertBefore(value,element);
 	};
 	// @element - dom element
 	// @value - html element node
@@ -219,41 +238,40 @@
 				list[i].func = func;
 				list[i].func();
 			}
-		}	
+		}
 	};
 	// @element - dom element
 	// @name - dom name attribute
 	// @value - dom name attribute value
-	// sets element's name to value  
+	// sets element's name to value
 	_.setAttr= function(element,name,value){
 		element.setAttribute(name,value);
 	};
 	// @element - dom element
 	// @name - dom name attribute
-	// returns element's name value  
+	// returns element's name value
 	_.getAttr= function(element,name){
 		return element.getAttribute(name);
 	};
 	// @element - dom element
 	// @name - class name
-	// sets element's class name to value  
+	// sets element's class name to value
 	_.setClass= function(element,name){
 		_.setAttr(element,"class",name);
 	};
 	// @element - dom element
 	// returns class name of an element
 	_.getClass= function(element){
-		_.getAttr(element,"class",name);
+		return _.getAttr(element,"class");
 	};
 	// @element - dom element
 	// removes class of an element
 	_.removeClass= function(element){
-		_.getAttr(element,"class","");
+		_.setAttr(element,"class","");
 	};
 	// @element - dom element
-	// @name - styler name
 	// @value - styler value
-	// sets element's style name to value  
+	// sets element's style name to value
 	_.setStyle= function(element,value){
 		_.setAttr(element,"style",value);
 	};
@@ -265,7 +283,7 @@
 		if(name){
 			if (element.style.getPropertyValue)
                 return element.style.getPropertyValue(name);
-            else 
+            else
                 return element.style.getAttribute(name);
 		}
 		return _.getAttr(element,"style");
@@ -281,8 +299,12 @@
 		var resultStr = name+":"+value;
 		if(!temp||temp=="")
 			temp = resultStr;
-		else if(temp.indexOf(name)==-1)
-			temp+= ";"+resultStr;
+		else if(temp.indexOf(name)==-1){
+			if(temp[temp.length-1]!=';')
+				temp+= ";"+resultStr;
+			else
+				temp+= resultStr;
+		}
 		else
 			temp = temp.replace(regex,resultStr);
 		_.setAttr(element,"style",temp);
@@ -290,23 +312,24 @@
 	// @element - dom element
 	// @name - styler name
 	// removes the name
-	_.removeStyle= function(element,name){
-		var temp = _.getAttr(element,"style");
-		var regex = new RegExp(name+_.regex.css);
-		temp = temp.replace(regex,"");
-		_.setAttr(element,"style",temp);
+	_.removeStyle= function(element){
+		_.setAttr(element,"style","");
 	};
 	// @element - dom element
 	// @html - html value
 	// if called with one param returns html string of an element
 	// else replaces html of the element
-	_.html = function(){
-		if(arguments.length==1)
+	_.html = function(element,html){
+		if(!html)
 			return arguments[0].innerHTML;
-		if(arguments[0].length>1){				
-			_.foreach(arguments[0],function(arg){_.html(this,arg);},arguments[1]);}
+		if(html.tagName)
+			html = _.toString(html);
+		if(element.length>1)
+			_.foreach(element,function(){
+				_.html(this,html);
+			});
 		else
-			arguments[0].innerHTML = arguments[1];
+			element.innerHTML = html;
 	};
 	// @el - json, javascript object
 	// @ex - json, javascript object extension
@@ -352,14 +375,15 @@
 				if(callback){
 					if(success)
 						success();
-					if(type=="xml")
+					type = type.toLowerCase();
+					if(type==_.ajaxDataType.XML)
 						callback(xhr.responseXML);
-					else if(type=="json"&&xhr.responseText)
+					else if(type==_.ajaxDataType.JSON&&xhr.responseText)
 						callback(eval("("+xhr.responseText+")"));
 					else
 						callback(xhr.responseText);
 				}
-				else if(type=="script")
+				else if(type==_.ajaxDataType.SCRIPT)
 					eval(xhr.responseText);
 			}
 			else if(error)
@@ -393,43 +417,43 @@
 	// @url - url that request will be send
 	// @type - type of returned string
 	// @callback - function to be called with returned data
-	// if called with two params(url,callback) 
+	// if called with two params(url,callback)
 	// else (url,type,callback)
 	// makes a http get request
-	_.get = function(){
-		if(typeof arguments[1] == "function")
-			get(arguments[0],null,arguments[1]);
+	_.get = function(arg0,arg1,arg2){
+		if(typeof arg1 == "function")
+			get(arg0,null,arg1);
 		else
-			get(arguments[0],arguments[1],arguments[2]);
+			get(arg0,arg1,arg2);
 	};
 	// @url - url that request will be send
 	// @data - data to be sent to server
 	// @type - type of returned string
 	// @callback - function to be called with returned data
-	// if called with two params(url,callback) 
+	// if called with two params(url,callback)
 	// else if(url,type,callback) or (url,data,callback)
 	// else (url,data,type,callback)
 	// makes a http post request
-	_.post = function(){
-		if(typeof arguments[3] == "function")
-			post(arguments[0],arguments[1],arguments[2],arguments[3]);
-		else if(typeof arguments[2] == "function"){
-			if(arguments[1]=="json"||arguments[1]=="xml")
-				post(arguments[0],null,arguments[1],arguments[2]);
+	_.post = function(arg0,arg1,arg2,arg3){
+		if(arg3&&typeof(arg3) == "function")
+			post(arg0,arg1,arg2,arg3);
+		else if(arg2&&typeof(arg2) == "function"){
+			if(_.ajaxDataType[arg1.toUpperCase()])
+				post(arg0,null,arg1,arg2);
 			else
-				post(arguments[0],arguments[1],null,arguments[2]);
+				post(arg0,arg1,null,arg2);
 		}
-		else if(typeof arguments[1] == "function")
-			post(arguments[0],null,null,arguments[1]);
+		else if(typeof arg1 == "function")
+			post(arg0,null,null,arg1);
 		else
-			post(arguments[0],arguments[1],null,null);
+			post(arg0,arg1,null,null);
 	};
 	// @url - url that request will be send
 	// @options - ajax request options
 	// makes a ajax request with options
 	_.ajax = function(url,options){
 		var xhr = createXHR();
-		options = _.extend(_.regex.options,options);
+		options = _.extend(_.ajaxOptions,options);
 		xhr.onreadystatechange = function(){handleResponse(xhr,options.type,options.callback,options.success,options.error);};
 		xhr.open(options.method,url,options.asyn);
 		if(options.before)options.before();
@@ -466,14 +490,277 @@
 	};
 	// @fn - function to be called when document is loaded
 	// calls fn when document is loaded
-	_.loaded = function(fn){
+	_.ready = function(fn){
 		_.attach(window,"load",fn);
 	};
-	// regular expressions that are used 
+	// @statement - expression to be executed
+	// executes given @statement
+	_.exec = function(statement){
+		try{eval(statement);}catch (e) {}
+	};
+	// @element - dom element
+	// returns the string representation of @element.
+	_.toString = function(element){
+		if(element.tagName){
+			var temp = "";
+			temp += "<"+element.tagName+" ";
+			for(var i=0;i<element.attributes.length;i++){
+				var attribute = element.attributes[i];
+				temp += attribute.name+"='"+attribute.value+"' ";
+			}
+			temp +=">"+element.innerHTML+"</"+element.tagName+">";
+			return temp;
+		}
+		return element;
+	};
+
+	// private
+	// @fn - javascript function
+	// @args - array of arguments
+	// returns a javascript object that is instance of @fn constructed
+	// with the parameters @args
+	construct = function(fn,args){
+		function func() {
+			fn.apply(this, args);
+		}
+		func.prototype = fn.prototype;
+		return new func();
+	};
+	// regular expressions that are used
 	_.regex={
 		css: "(\\s)*:(\\s)*(#)*?([0-9A-Za-z])+(\\s)*",
-		url: "http(s){0,1}:",
-		options : {method:'GET',type:'',error:null,success:null,params:null,before:null,asyn:true,callback:null}
+		url: "http(s){0,1}:"
 	};
+
+	_.ajaxOptions = {method:'GET',type:'',error:null,success:null,params:null,before:null,asyn:true,callback:null};
+	_.ajaxDataType = {XML:"xml",JSON:"json",SCRIPT:"script"};
+
+	// @ext - extension for _.up
+	// @noContent - boolean value that indicates function use UPJSObject content or not.
+	// extends _.up with the @ext
+	_.addExtension = function(ext,noContent){
+		if(noContent){
+			for(var key in ext)
+				_[key] = ext[key];
+		}
+		_.extend(_.up.prototype,ext);
+	};
+
+	_.addPlugin = function(plugin){
+		_.extend(_.up.plugins,plugin);
+	};
+
+	_.up = (function(){
+
+		function up(content){
+			if(content){
+				if(content.UPJSObject){
+					this.content = content.getContent();
+					this.length = content.length?content.length:0;
+					content = null;
+					this.UPJSObject = true;
+				}
+				else{
+					this.content = content;
+					this.length = content.length?content.length:0;
+					this.UPJSObject = true;
+				}
+			}
+		};
+
+		up.prototype = {
+			query : function(selector){
+				return new _.up(_.select(this.content,selector));
+			},
+			parent : function(){
+				return new _.up(_.parent(this.content));
+			},
+			children : function(){
+				return new _.up(_.children(this.content));
+			},
+			next : function(){
+				return new _.up(_.next(this.content));
+			},
+			prev : function(){
+				return new _.up(_.prev(this.content));
+			},
+			first : function(){
+				if(this.length>0)
+					return new _.up(this.content[0]);
+				return new _.up(_.first(this.content));
+			},
+			last:function(){
+				if(this.length>0)
+					return new _.up(this.content[this.length-1]);
+				return new _.up(_.last(this.content));
+			},
+			replace : function(newNode,oldNode){
+				if(newNode.getContent)
+					newNode = newNode.getContent();
+				if(oldNode.getContent)
+					oldNode = oldNode.getContent();
+				_.replace(this.content,newNode,oldNode);
+			},
+			remove : function(){
+				if(this.content.length)
+					_.foreach(this.content,function(){
+						_.remove(_.parent(this),this);
+					});
+				_.remove(_.parent(this.content),this.content);
+			},
+			append : function(value){
+				if(value.getContent)
+					value = value.getContent();
+				if(this.content.length)
+					_.foreach(this.content,function(){
+						_.append(this,value);
+					});
+				else
+					_.append(this.content,value);
+			},
+			insertBefore :function(value){
+				_.insertBefore(this.content,value);
+			},
+			insertAfter : function(value){
+				_.insertAfter(this.content,value);
+			},
+			clone : function(value){
+				return new _.up(_.clone(this.content));
+			},
+			focus : function(value){
+				_.focus(value);
+			},
+			foreach : function(func,args){
+				_.foreach(this.content,func,args);
+			},
+			setAttr : function(name,value){
+				if(this.content.length)
+					_.foreach(this.content,function(){
+						_.setAttr(this,name,value);
+					});
+				else
+					_.setAttr(this.content,name,value);
+			},
+			getAttr : function(name){
+				return _.getAttr(this.content,name);
+			},
+			setClass : function(name){
+				if(this.content.length)
+					_.foreach(this.content,function(){
+						_.setClass(this,name);
+					});
+				else
+					_.setClass(this.content,name);
+			},
+			getClass : function(){
+				return _.getClass(this.content);
+			},
+			removeClass : function(){
+				if(this.content.length)
+					_.foreach(this.content,function(){
+						_.removeClass(this);
+					});
+				else
+					_.removeClass(this.content);
+			},
+			setStyle : function(value){
+				if(this.content.length)
+					_.foreach(this.content,function(){
+						_.setStyle(this,value);
+					});
+				else
+					_.setStyle(this.content,value);
+			},
+			getStyle : function(value){
+				return _.getStyle(this.content,value);
+			},
+			addStyle : function(name,value){
+				if(this.content.length)
+					_.foreach(this.content,function(){
+						_.addStyle(this,name,value);
+					});
+				else
+					_.addStyle(this.content,name,value);
+			},
+			removeStyle : function(){
+				if(this.content.length)
+					_.foreach(this.content,function(){
+						_.removeStyle(this);
+					});
+				else
+					_.removeStyle(this.content);
+			},
+			html : function(html){
+				if(html){
+					if(this.content.length)
+						_.foreach(this.content,function(){
+							_.html(this,html);
+						});
+					else
+						_.html(this.content,html);
+				}
+				else
+					return _.html(this.content);
+
+			},
+			extend : function(ex){
+				_.extend(this.content,ex);
+			},
+			attach : function(events,fn){
+				if(this.content.length)
+					_.foreach(this.content,function(){
+						_.attach(this,events,fn);
+					});
+				else
+					_.attach(this.content,events,fn);
+			},
+			detach : function(events){
+				if(this.content.length)
+					_.foreach(this.content,function(){
+						_.detach(this,events,fn);
+					});
+				else
+					_.detach(this.content,events,fn);
+			},
+			value : function(value){
+				if(value!=undefined)
+					this.content.value = value;
+				return this.content.value;
+			},
+			color : function(color){
+				this.addStyle("color",color);
+			},
+			getContent: function(){
+				return this.content;
+			},
+			toString : function(){
+				return _.toString(this.content);
+			},
+			click : function(fn){
+				_.attach(this.content,"click",fn);
+			},
+			mouseOver : function(fn){
+				_.attach(this.content,"mouseover",fn);
+			},
+			mouseOut : function(fn){
+				_.attach(this.content,"mouseout",fn);
+			},
+			getPlugin : function(name){
+				var plugin = _.up.plugins[name];
+				var args = [];
+				args.push(this.content);
+				for(var i=1;i<arguments.length;i++)
+					args.push(arguments[i]);
+				return construct(plugin,args);
+			}
+
+		};
+
+		return up;
+
+	})();
+
+	_.up.plugins = {};
+
 	return _;
 })();

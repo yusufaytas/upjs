@@ -42,5 +42,22 @@ _.cookie = (function(){
 	c.deleteCookie = function (name){
 		c.setCookie(name,"",-1);
 	};
+	
+	_.addExtension({
+		cookieEnabled:function(){
+			return c.cookieEnabled();
+		},
+		setCookie : function(name,value,days){
+			c.setCookie(name,value,days);
+		},
+		getCookie : function(name){
+			return c.getCookie(name);
+		},
+		deleteCookie:function (name){
+			c.setCookie(name);
+		}
+	},true);
+
 	return c;
+	
 })();

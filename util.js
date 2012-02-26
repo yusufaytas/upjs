@@ -11,10 +11,10 @@ _.util = (function(){
 	// @end - stop point of array
 	// returns an array by putting ints between @begin and @end
 	u.range = function(begin,end){
-		var years = [];
-		for (var year = begin; year < end; year++)
-		    years.push(year);
-		return years;
+		var nums = [];
+		for (var num = begin; num < end; num++)
+			nums.push(num);
+		return nums;
 	};
 	
 	// @arr - javascript array
@@ -55,7 +55,7 @@ _.util = (function(){
 	// @item - item in @arr
 	// pushes @item into @arr by cheking uniqueness
 	u.pushIfNotExist = function(arr,item){
-		if(u.indexOf(arr,item)!=-1)
+		if(u.indexOf(arr,item)==-1)
 			arr.push(item);
 	};
 	
@@ -63,14 +63,14 @@ _.util = (function(){
 	// @s - string to be found
 	// returns true or false if @str ends with @s
 	u.endsWith = function(str,s){
-		return !(str.matches(new RegExp("."+s)));
+		return new RegExp("(.)*"+s).test(str);
 	};
 	
 	// @str - string to be searched
 	// @s - string to be found
 	// returns true or false if @str starts with @s
 	u.startsWith = function(str,s){
-		return !(str.matches(new RegExp(s+".")));
+		return new new RegExp(s+".").test(str);
 	};
 	
 	// @str - string to be searched
@@ -79,5 +79,16 @@ _.util = (function(){
 		return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 	};
 
+	_.addExtension({
+		range:u.range,
+		uniquify : u.uniquify,
+		copy : u.copy,
+		indexOf:u.indexOf,
+		pushIfNotExist:u.pushIfNotExist,
+		endsWith:u.endsWith,
+		startsWith:u.startsWith,
+		trim : u.trim
+	},true);
+	
 	return u;
 })();

@@ -76,12 +76,12 @@ _.serializer = (function(){
 	// @type - type of returned string
 	// @callback - function to be called with returned data
 	// if called with two params(url,json,callback)
-	// serialize json and do a post request
-	s.postJSON = function(url,json,type,callback){
-		if(type)
-			_.post(url,"json="+encodeURIComponent(s.serialize(json)),callback);
+	// serializes json and do a post request
+	s.postJSON = function(url,json,arg1,arg2){
+		if(arg2)
+			_.post(url,"json="+encodeURIComponent(s.serialize(json)),arg1,arg2);
 		else
-			_.post(url,"json="+encodeURIComponent(s.serialize(json)),type,callback);
+			_.post(url,"json="+encodeURIComponent(s.serialize(json)),arg1);
 	};
 	// @url - url that request will be send
 	// @json - json to be sent to server
@@ -89,11 +89,30 @@ _.serializer = (function(){
 	// @callback - function to be called with returned data
 	// if called with two params(url,form,callback)
 	// serialize form and do a post request
-	s.postFORM = function(url,form,type,callback){
-		if(type)
-			_.post(url,s.serialize(form),type,callback);
+	s.postForm = function(url,form,arg1,arg2){
+		if(arg2)
+			_.post(url,s.serialize(form),arg1,arg2);
 		else
-			_.post(url,s.serialize(form),callback);
+			_.post(url,s.serialize(form),arg1);
 	};
+	
+	_.addExtension({
+		serialize:function(){
+			return s.serialize(this.content);
+		},
+		serializeForm : function(){
+			return s.serializeForm(this.content);
+		},
+		serializeJSON : function(){
+			return s.serializeJSON(this.content);
+		},
+		postJSON:function (url,arg1,arg2){
+			s.postJSON(url,this.content,arg1,arg2);
+		},
+		postForm:function (url,arg1,arg2){
+			s.postForm(url,this.content,arg1,arg2);
+		}
+	});
+	
 	return s;
 })();
