@@ -6,4 +6,3 @@ UPJS is a javascript library that has a selector for the html elements and provi
 UPJS development is stopped in 2010 due to the insane improvement in JQuery. :D
 ###Licence
 UPJS is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. UPJS is also MIT licenced.
- 
