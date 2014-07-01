@@ -1,6 +1,6 @@
 /*
  * cookie, upjs extension
- * http://www.upjs.cetsoft.org/
+ * http://www.upjs.cetsoft.com/
  * 
  * Copyright (C) 2011, Yusuf Aytas
  */
