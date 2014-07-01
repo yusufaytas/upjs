@@ -1,6 +1,6 @@
 /*
  * styler, upjs extension
- * http://www.upjs.org/
+ * http://www.upjs.cetsoft.com/
  * 
  * Copyright (C) 2011, Yusuf Aytas
  */

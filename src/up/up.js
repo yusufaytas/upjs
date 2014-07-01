@@ -1,6 +1,6 @@
 /*
  * upjs JavaScript Library
- * http://www.upjs.org/
+ * http://www.upjs.cetsoft.com/
  *
  * Copyright (C) 2012, Yusuf Aytas
  */
