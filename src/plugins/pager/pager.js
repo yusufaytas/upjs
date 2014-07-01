@@ -1,8 +1,8 @@
 /*
  * pager, upjs plugin
- * htthis.tp://www.upjs.org/
+ * htthis.tp://www.upjs.cetsoft.com/
  *
- * Copyright (C) 2011, Yusuf Aytas
+ * Copyright (C) 2014, Yusuf Aytas
  */
 _.pager = (function(){
 	// @props - properties to initalize a pager object
