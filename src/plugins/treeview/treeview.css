@@ -1,0 +1,24 @@
+@CHARSET "ISO-8859-1";
+.treeview{
+	padding:0px;
+}
+.treeview, .treeview ul{
+	list-style-type: none;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+.treeview ul li{
+	margin-left: -20px;
+}
+.treeview span{
+	cursor: pointer;
+}
+.treeviewOn{
+	background: left url('tron.gif') no-repeat;
+}
+.treeviewOff{
+	background: left url('troff.gif') no-repeat;
+}
+.treeviewleaf{
+	background: left url('trleaf.gif') no-repeat;
+}

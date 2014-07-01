@@ -1,0 +1,7 @@
+.pager span{
+	cursor: pointer;
+	padding: 3px;
+}
+.currentPage{
+	font-weight: bold;
+}
