@@ -2,7 +2,7 @@
  * upjs JavaScript Library
  * http://www.upjs.cetsoft.com/
  *
- * Copyright (C) 2012, Yusuf Aytas
+ * Copyright (C) 2014, Yusuf Aytas
  */
  //Creating upjs and _ variable
  var _= up =  (function(){
