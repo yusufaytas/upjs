@@ -2,7 +2,7 @@
  * cookie, upjs extension
  * http://www.upjs.cetsoft.com/
  * 
- * Copyright (C) 2011, Yusuf Aytas
+ * Copyright (C) 2014, Yusuf Aytas
  */
 _.cookie = (function(){
 	function c(){};
