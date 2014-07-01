@@ -1,6 +1,6 @@
 /*
  * serializer, upjs extension
- * http://www.upjs.org/
+ * http://www.upjs.cetsoft.org/
  * 
  * Copyright (C) 2011, Yusuf Aytas
  */
