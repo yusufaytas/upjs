@@ -1,6 +1,6 @@
 /*
  * pager, upjs plugin
- * htthis.tp://www.upjs.cetsoft.com/
+ * http://www.yusufaytas.com/
  *
  * Copyright (C) 2014, Yusuf Aytas
  */
