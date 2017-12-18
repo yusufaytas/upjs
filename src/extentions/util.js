@@ -1,6 +1,6 @@
 /*
  * util, upjs extension
- * http://www.upjs.cetsoft.com/
+ * http://www.yusufaytas.com/
  * 
  * Copyright (C) 2014, Yusuf Aytas
  */
